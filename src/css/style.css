@@ -1,0 +1,34 @@
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+body {
+    position: relative;
+    padding-bottom: 6rem;
+    min-height: 100%;
+}
+.card {
+    position: relative;
+    min-height: 100%;
+}
+#employee_id {
+    position: relative;
+    min-height: 100%;
+}
+#customer_id {
+    position: relative;
+    min-height: 100%;
+}
+#message {
+    position: relative;
+    min-height: 100%;
+}
+#add_form {
+    position: relative;
+    min-height: 100%;
+}
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
