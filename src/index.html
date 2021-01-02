@@ -20,6 +20,7 @@
             $('#footer').load("footer.html");
         });
     </script>
+    <script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
     <div id="header"></div>
@@ -37,30 +38,10 @@
     <canvas id="myChart" width="100" height="100"></canvas>
     <script>
         d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
-        
-        function makeChart(aprt) {
-            var aprtStartTime = aprt.map(function(d) {return d.apt_start_time});
-            var aprtGrade = aprt.map(function(d) {return d.aprt_grade});
-            var prodGroup = aprt.map(function(d) {return d.prodgroup3});
-            prodGroup = prodGroup.filter(function(d) { return d == "TGLUP3"})
-            console.log(prodGroup)
-            var chart = new Chart('myChart', {
-                type: 'line',
-                data: {
-                labels: aprtStartTime,
-                datasets: [
-                    {
-                        label: prodGroup,
-                        data: aprtGrade
-                    }
-                ]
-                }
-            });
-        }
     </script>
     
     <div id="footer"></div>
-    <script type="text/javascript" src="js/script.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
