@@ -65,7 +65,7 @@ function makeChart(aprt) {
             }
         );
     }
-    console.log(aprtData);
+    // console.log(aprtData);
 
     // var aprtGradeGrouped_EHL = personGroupedByColor['EHL'].map(function(d) {return d.aprt_grade});
     // var aprtGradeGrouped_JSL = personGroupedByColor['JSL'].map(function(d) {return d.aprt_grade});
@@ -75,7 +75,7 @@ function makeChart(aprt) {
         type: 'line',
         data: {
             // use slide() function for select the data in the range of the array
-            labels: sorted_time.slice(0, 30),
+            labels: sorted_time.slice(1).slice(-10),
             datasets: aprtData
         }
     });
@@ -89,25 +89,39 @@ function makeChart(aprt) {
 //         }
 //     })
 // });
+// $(document).ready(function() {
+//     var options = [];
+//     for (var i = 0; i < unique.length; i++) {
+//         var option = "<option " + "value='" + unique[i] + "'>" + unique[i] + "";
+//         options.push(option);
+//     }
+//     $('.selectpicker').html(options);
+//     $('.selectpicker').selectpicker('refresh');
+// });
+
 $(document).ready(function() {
-    var options = [];
-    for (var i = 0; i < unique.length; i++) {
-        var option = "<option " + "value='" + unique[i] + "'>" + unique[i] + "";
-        options.push(option);
-    }
-    $('.selectpicker').html(options);
-    $('.selectpicker').selectpicker('refresh');
+    $('#select1').one('show.bs.select', function() {
+        for (var i = 0; i < unique.length; i++) {
+            $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
+        }
+        $('.selectpicker').selectpicker('refresh');
+    })
 });
 
 
-
 $(document).ready(function() {
+    // Get filter function for chart
     $('#select1').change(function() {
         var select = $("#select1").val();
-        if (select == "All") {
+        if (select.length >= 1 && select.includes("All")) {
+            $('.selectpicker').selectpicker('deselectAll');
             d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
         }
+        // if (select == "All") {
+        //     d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
+        // }
         else {
+            console.log(select);
             makeChartFilter(select);
         }
     })
@@ -135,18 +149,20 @@ function makeChartFilter(filterVal) {
     // console.log(personGroupedByColor['EHL']);
     var aprtData = [];
 
+    for (var i = 0; i < filterVal.length; i++) {
+        var aprtGradeGrouped = personGroupedByColorGlobal[filterVal[i]].map(function(d) {return d.aprt_grade});
+        color = getRandomColor();
+        aprtData.push(
+            {
+                // plot setting for each product
+                label: filterVal,
+                borderColor: color,
+                fill:false,
+                data: aprtGradeGrouped
+            }
+        );
+    }
     
-    var aprtGradeGrouped = personGroupedByColorGlobal[filterVal].map(function(d) {return d.aprt_grade});
-    color = getRandomColor();
-    aprtData.push(
-        {
-            // plot setting for each product
-            label: filterVal,
-            borderColor: color,
-            fill:false,
-            data: aprtGradeGrouped
-        }
-    );
     
     console.log(aprtData);
 
@@ -158,7 +174,7 @@ function makeChartFilter(filterVal) {
         type: 'line',
         data: {
             // use slide() function for select the data in the range of the array
-            labels: sorted_time.slice(0, 30),
+            labels: sorted_time.slice(0, 5),
             datasets: aprtData
         }
     });
