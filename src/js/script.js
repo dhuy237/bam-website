@@ -1,5 +1,10 @@
 // Dataset path
 var dataPath = 'data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv';
+var unique = [];
+var aprtStartTime;
+var aprtGrade;
+var prodGroup;
+var personGroupedByColorGlobal;
 
 function groupBy(array, key) {
     // Accepts the array and key
@@ -21,12 +26,6 @@ function getRandomColor() {
     color += '4D';
     return color;
 }
-
-var unique = [];
-var aprtStartTime;
-var aprtGrade;
-var prodGroup;
-var personGroupedByColorGlobal;
 
 function makeChart(aprt) {
     // Clear a chart from a canvas so that hover events cannot be triggered
@@ -88,55 +87,6 @@ function makeChart(aprt) {
     });
 }
 
-// $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
-// $(document).ready(function() {
-//     $('#select1').one('click', function() {
-//         for (var i = 0; i < unique.length; i++) {
-//             $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
-//         }
-//     })
-// });
-// $(document).ready(function() {
-//     var options = [];
-//     for (var i = 0; i < unique.length; i++) {
-//         var option = "<option " + "value='" + unique[i] + "'>" + unique[i] + "";
-//         options.push(option);
-//     }
-//     $('.selectpicker').html(options);
-//     $('.selectpicker').selectpicker('refresh');
-// });
-
-$(document).ready(function() {
-    // Event "show.bs.select": This event fires immediately when the show instance method is called.
-    $('#select1').one('show.bs.select', function() {
-        for (var i = 0; i < unique.length; i++) {
-            $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
-        }
-        $('.selectpicker#select1').selectpicker('refresh');
-    })
-});
-
-
-$(document).ready(function() {
-    // Get filter function for chart
-    $('#select1').change(function() {
-        var select = $("#select1").val();
-        var selectLength = select.length;
-
-        if (selectLength >= 1 && select.includes("All")) {
-            $('.selectpicker#select1').selectpicker('deselectAll');
-            d3.csv(dataPath).then(makeChart);
-        }
-        // if (select == "All") {
-        //     d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
-        // }
-        else {
-            console.log(select);
-            makeChartFilter(select);
-        }
-    })
-});
-
 function makeChartFilter(filterVal) {
     // Clear a chart from a canvas so that hover events cannot be triggered
     $("#myChart").remove();
@@ -193,3 +143,65 @@ function makeChartFilter(filterVal) {
         }
     });
 }
+
+// For Product Filter
+$(document).ready(function() {
+    // Event "show.bs.select": This event fires immediately when the show instance method is called.
+    $('#select1').one('show.bs.select', function() {
+        for (var i = 0; i < unique.length; i++) {
+            $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
+        }
+        $('.selectpicker#select1').selectpicker('refresh');
+    })
+});
+
+$(document).ready(function() {
+    // Get filter function for chart
+    $('#select1').change(function() {
+        var select = $("#select1").val();
+        var selectLength = select.length;
+
+        if (selectLength >= 1 && select.includes("All")) {
+            $('.selectpicker#select1').selectpicker('deselectAll');
+            d3.csv(dataPath).then(makeChart);
+        }
+        // if (select == "All") {
+        //     d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
+        // }
+        else {
+            console.log(select);
+            makeChartFilter(select);
+        }
+    })
+});
+
+// For Operation Filter
+$(document).ready(function() {
+    // Event "show.bs.select": This event fires immediately when the show instance method is called.
+    $('#selectOperation').one('show.bs.select', function() {
+        for (var i = 0; i < unique.length; i++) {
+            $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
+        }
+        $('.selectpicker#selectOperation').selectpicker('refresh');
+    })
+});
+
+$(document).ready(function() {
+    // Get filter function for chart
+    $('#selectOperation').change(function() {
+        var select = $("#selectOperation").val();
+        var selectLength = select.length;
+
+        if (selectLength >= 1 && select.includes("All")) {
+            $('.selectpicker#selectOperation').selectpicker('deselectAll');
+            d3.csv(dataPath).then(makeChart);
+        }
+        // if (select == "All") {
+        //     d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
+        // }
+        else {
+            console.log(select);
+            makeChartFilter(select);
+        }
+    })
+});
