@@ -1,3 +1,6 @@
+// Dataset path
+var dataPath = 'data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv';
+
 function groupBy(array, key) {
     // Accepts the array and key
     return array.reduce((result, currentValue) => {
@@ -26,6 +29,9 @@ var prodGroup;
 var personGroupedByColorGlobal;
 
 function makeChart(aprt) {
+    // Clear a chart from a canvas so that hover events cannot be triggered
+    $("#myChart").remove();
+    $('#graph-container').append('<canvas id="myChart"></canvas>');
     // Remove time with split(' ') to get date only of aprt_start_time
     aprtStartTime = aprt.map(function(d) {return d.aprt_start_time.split(' ')[0]});
     aprtGrade = aprt.map(function(d) {return d.aprt_grade});
@@ -60,6 +66,7 @@ function makeChart(aprt) {
                 // plot setting for each product
                 label: unique[i],
                 borderColor: color,
+                lineTension: 0,
                 fill:false,
                 data: aprtGradeGrouped
             }
@@ -100,11 +107,12 @@ function makeChart(aprt) {
 // });
 
 $(document).ready(function() {
+    // Event "show.bs.select": This event fires immediately when the show instance method is called.
     $('#select1').one('show.bs.select', function() {
         for (var i = 0; i < unique.length; i++) {
             $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
         }
-        $('.selectpicker').selectpicker('refresh');
+        $('.selectpicker#select1').selectpicker('refresh');
     })
 });
 
@@ -113,9 +121,11 @@ $(document).ready(function() {
     // Get filter function for chart
     $('#select1').change(function() {
         var select = $("#select1").val();
-        if (select.length >= 1 && select.includes("All")) {
-            $('.selectpicker').selectpicker('deselectAll');
-            d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
+        var selectLength = select.length;
+
+        if (selectLength >= 1 && select.includes("All")) {
+            $('.selectpicker#select1').selectpicker('deselectAll');
+            d3.csv(dataPath).then(makeChart);
         }
         // if (select == "All") {
         //     d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
@@ -128,6 +138,9 @@ $(document).ready(function() {
 });
 
 function makeChartFilter(filterVal) {
+    // Clear a chart from a canvas so that hover events cannot be triggered
+    $("#myChart").remove();
+    $('#graph-container').append('<canvas id="myChart"></canvas>');
     // Remove time with split(' ') to get date only of aprt_start_time
     
     // console.log(aprtStartTime);
@@ -155,8 +168,9 @@ function makeChartFilter(filterVal) {
         aprtData.push(
             {
                 // plot setting for each product
-                label: filterVal,
+                label: filterVal[i],
                 borderColor: color,
+                lineTension: 0,
                 fill:false,
                 data: aprtGradeGrouped
             }
@@ -174,7 +188,7 @@ function makeChartFilter(filterVal) {
         type: 'line',
         data: {
             // use slide() function for select the data in the range of the array
-            labels: sorted_time.slice(0, 5),
+            labels: sorted_time.slice(0, 10),
             datasets: aprtData
         }
     });

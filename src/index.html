@@ -48,15 +48,23 @@
         </select>
         </div>
     </form> -->
-    <form class="simple_form form-inline">
-        <div class="form-group select required">
-            <label for="basic-url" class="form-label">Product</label>
-            <select class="selectpicker required form-control" multiple id="select1">
-                <option value="All">All</option>
-            </select>
-        </div>
-    </form>
-    
+    <!-- <form class="simple_form form-inline"> -->
+    <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+        <div for="basic-url" class="form-label">Product</div>
+        <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="select1" id="select1">
+            <option value="All" selected>All</option>
+        </select>
+    </div>
+    <!-- </form> -->
+
+    <!-- <form class="simple_form form-inline"> -->
+    <div class="form-group select required button-wrapper">
+        <div for="basic-url" class="form-label">Operation</div>
+        <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectOperation" id="selectOperation">
+            <option value="All" selected>All</option>
+        </select>
+    </div>
+    <!-- </form> -->
 
     <!-- <form class="simple_form form-inline" method="get">
         <div class="form-group select required">
@@ -77,7 +85,7 @@
         <option>Relish</option>
       </select> -->
 
-    <div class="card" style="margin:auto; width:80%; height:50%">
+    <div class="card" style="margin:auto; width:80%; height:50%" id="graph-container">
         <canvas id="myChart"></canvas>
     </div>
 
@@ -93,7 +101,7 @@
     </script>  -->
 
     <script>
-        d3.csv('data/APRT_Web_VN_ENG_Realtime_BAM-BA.csv').then(makeChart);
+        d3.csv(dataPath).then(makeChart);
     </script>
     
     <div id="footer"></div>

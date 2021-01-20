@@ -11,24 +11,12 @@ body {
     position: relative;
     min-height: 100%;
 }
-#employee_id {
-    position: relative;
-    min-height: 100%;
-}
-#customer_id {
-    position: relative;
-    min-height: 100%;
-}
-#message {
-    position: relative;
-    min-height: 100%;
-}
-#add_form {
-    position: relative;
-    min-height: 100%;
-}
 #footer {
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+.button-wrapper {
+    display:inline-block;
 }
