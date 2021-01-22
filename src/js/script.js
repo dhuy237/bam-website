@@ -27,6 +27,8 @@ function getRandomColor() {
     return color;
 }
 
+// --- Calculate Quartile --- 
+
 // sort array ascending
 const asc = arr => arr.sort((a, b) => a - b);
 
@@ -62,6 +64,8 @@ const q75 = arr => quantile(arr, .75);
 const median = arr => q50(arr);
 
 // console.log(median([0.6339220606052024, 0.004016931957101243, 0.138119437078035, 0.38064704776624414, 0.004799234551713907]));
+
+// --- End calculate quartile --- 
 
 function makeChart(aprt) {
     // Clear a chart from a canvas so that hover events cannot be triggered (it appears when we call makeChart() many times)
@@ -133,6 +137,7 @@ function makeChart(aprt) {
         // console.log(unique[i]);
         let aprtGradeByDate = [];
         /**
+         * TODO 
          * Problem: Group aprt_grade by date to compute median in each date
          * Input: array of object from a product
          * Example: personGroupedByColor['EHL'] = [{
@@ -147,9 +152,9 @@ function makeChart(aprt) {
          * Output: array of median of each date
          * Get unique date in each Product 
         */
-        for (let j = 0; j < personGroupedByColor[unique[i]].length; j++) {
-            if ()
-        }
+        // for (let j = 0; j < personGroupedByColor[unique[i]].length; j++) {
+        //     if ()
+        // }
 
         var aprtGradeGrouped = personGroupedByColor[unique[i]].map(function(d) {return +d.aprt_grade});
         // console.log(aprtGradeGrouped);
