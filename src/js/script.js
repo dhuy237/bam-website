@@ -27,29 +27,72 @@ function getRandomColor() {
     return color;
 }
 
+// sort array ascending
+const asc = arr => arr.sort((a, b) => a - b);
+
+const sum = arr => arr.reduce((a, b) => a + b, 0);
+
+const mean = arr => sum(arr) / arr.length;
+
+// sample standard deviation
+const std = (arr) => {
+    const mu = mean(arr);
+    const diffArr = arr.map(a => (a - mu) ** 2);
+    return Math.sqrt(sum(diffArr) / (arr.length - 1));
+};
+
+const quantile = (arr, q) => {
+    const sorted = asc(arr);
+    const pos = (sorted.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if (sorted[base + 1] !== undefined) {
+        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    } else {
+        return sorted[base];
+    }
+};
+
+const q25 = arr => quantile(arr, .25);
+
+const q50 = arr => quantile(arr, .50);
+
+const q75 = arr => quantile(arr, .75);
+
+const median = arr => q50(arr);
+
+// console.log(median([0.6339220606052024, 0.004016931957101243, 0.138119437078035, 0.38064704776624414, 0.004799234551713907]));
+
 function makeChart(aprt) {
     // Clear a chart from a canvas so that hover events cannot be triggered (it appears when we call makeChart() many times)
     $("#myChart").remove();
     $('#graph-container').append('<canvas id="myChart"></canvas>');
     
     // console.log(aprt);
-    // Select row with condition columns 
-    // If we have many condition (many filter button), we have to use the variable sequencially
-    // a = aprt.filter() -> b = a.filter() -> b = b.filter()
-    
+    /**
+     * Select row with condition columns 
+     * If we have many condition (many filter button), we have to use the variable sequencially
+     * a = aprt.filter() -> b = a.filter() -> b = b.filter()
+     */
+
     // var a_EHL = aprt.filter(function(d){ return d.prodgroup3 == "EHL" && d.cascading == "Y"});
     // var b_cas = a_EHL.filter(function(d){ return d.cascading == "Y" });
     // console.log(a_EHL);
     // console.log(b_cas);
-
-    // Remove time with split(' ') to get date only of aprt_start_time
-    aprtStartTime = aprt.map(function(d) {return d.aprt_start_time.split(' ')[0]});
+    
     aprtGrade = aprt.map(function(d) {return d.aprt_grade});
     prodGroup = aprt.map(function(d) {return d.prodgroup3});
 
-    // Convert date value from string to Date
-    // Have to convert to Date type because it will be sorted later
-    // Sort result only correct with Date type
+    // --- Start preprocessing time value (aprt_start_time) step ---
+
+    // Remove time with split(' ') to get date only of aprt_start_time
+    aprtStartTime = aprt.map(function(d) {return d.aprt_start_time.split(' ')[0]});
+
+    /**
+     * Convert date value from string to Date
+     * Have to convert to Date type because it will be sorted later
+     * Sort result only correct with Date type
+     */
     aprtStartTime.forEach(function(d, index, arr) {
         var parts = d.split('-');
         arr[index] = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -57,20 +100,25 @@ function makeChart(aprt) {
 
     // Sort time in ascending order
     var sorted_time = aprtStartTime.sort((a, b) => a - b);
-    // Convert "Wed Jul 01 2020 00:00:00 GMT+0700 (Indochina Time)" to "2020-07-01"
-    // Date type to string with format "YYYY-MM-DD"
+    /**
+     * Convert "Wed Jul 01 2020 00:00:00 GMT+0700 (Indochina Time)" to "2020-07-01"
+     * Date type to string with format "YYYY-MM-DD"
+     */ 
     sorted_time.forEach(function(d, index, arr) { 
         arr[index] = d.toISOString().split('T')[0];
     });
 
     // Filter unique value of aprt_time_start only
     sorted_time = sorted_time.filter((item, i, ar) => ar.indexOf(item) === i);
-    
 
-    // Get unique prodGroup item
-    // item --> item in array
-    // i --> index of item
-    // ar --> array reference, (in this case "list")
+    // --- End preprocessing time value step ---
+
+    /**
+     * Get unique prodGroup item
+     * item --> item in array
+     * i --> index of item
+     * ar --> array reference, (in this case "list")
+     */
     unique = prodGroup.filter((item, i, ar) => ar.indexOf(item) === i);
 
     // console.log(unique);
@@ -83,7 +131,28 @@ function makeChart(aprt) {
 
     for (var i = 0; i < unique.length; i++) {
         // console.log(unique[i]);
-        var aprtGradeGrouped = personGroupedByColor[unique[i]].map(function(d) {return d.aprt_grade});
+        let aprtGradeByDate = [];
+        /**
+         * Problem: Group aprt_grade by date to compute median in each date
+         * Input: array of object from a product
+         * Example: personGroupedByColor['EHL'] = [{
+         * ...
+         * aprt_start_time: "2020-07-09 04:24:36",
+         * aprt_grade: "0.4967588804354766"
+         * ...
+         * },
+         * {
+         * ...
+         * }]
+         * Output: array of median of each date
+         * Get unique date in each Product 
+        */
+        for (let j = 0; j < personGroupedByColor[unique[i]].length; j++) {
+            if ()
+        }
+
+        var aprtGradeGrouped = personGroupedByColor[unique[i]].map(function(d) {return +d.aprt_grade});
+        // console.log(aprtGradeGrouped);
         color = getRandomColor();
         aprtData.push(
             {
@@ -125,10 +194,12 @@ function makeChartFilter(filterVal) {
     sorted_time = sorted_time.filter((item, i, ar) => ar.indexOf(item) === i);
 
 
-    // Get unique prodGroup item
-    // item --> item in array
-    // i --> index of item
-    // ar --> array reference, (in this case "list")
+    /**
+     * Get unique prodGroup item
+     * item --> item in array
+     * i --> index of item
+     * ar --> array reference, (in this case "list")
+     */
     unique = prodGroup.filter((item, i, ar) => ar.indexOf(item) === i);
 
     // console.log(unique);
