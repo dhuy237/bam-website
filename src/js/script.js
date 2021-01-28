@@ -157,8 +157,21 @@ function makeChart(aprt) {
         // }
 
         var aprtGradeGrouped = personGroupedByColor[unique[i]].map(function(d) {return +d.aprt_grade});
-        // console.log(aprtGradeGrouped);
+        var aprtGradeGroupedTime = personGroupedByColor[unique[i]].map(function(d) {return d.aprt_start_time});
+        // console.log(personGroupedByColor['EHL']);
+        var dataAprtTime = [];
         color = getRandomColor();
+
+        for(var j = 0; j < aprtGradeGrouped.length; j++) {
+            dataAprtTime.push(
+                {
+                    x: aprtGradeGroupedTime[j],
+                    y: aprtGradeGrouped[j]
+                }
+            );
+        }
+        console.log(unique[i]);
+        console.log(dataAprtTime);
         aprtData.push(
             {
                 // plot setting for each product
@@ -166,9 +179,10 @@ function makeChart(aprt) {
                 borderColor: color,
                 lineTension: 0,
                 fill:false,
-                data: aprtGradeGrouped
+                data: dataAprtTime
             }
         );
+        
     }
     // console.log(aprtData);
 
@@ -181,8 +195,20 @@ function makeChart(aprt) {
         data: {
             // use slide() function for select the data in the range of the array
             // labels: sorted_time.slice(1).slice(-10),
-            labels: sorted_time,
+            // labels: sorted_time,
             datasets: aprtData
+        },
+        options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        day: 'MMM D'
+                    }
+                }
+              }]
+            }
         }
     });
 }
@@ -215,8 +241,20 @@ function makeChartFilter(filterVal) {
     var aprtData = [];
 
     for (var i = 0; i < filterVal.length; i++) {
-        var aprtGradeGrouped = personGroupedByColorGlobal[filterVal[i]].map(function(d) {return d.aprt_grade});
+        var aprtGradeGrouped = personGroupedByColorGlobal[filterVal[i]].map(function(d) {return +d.aprt_grade});
+        var aprtGradeGroupedTime = personGroupedByColorGlobal[filterVal[i]].map(function(d) {return d.aprt_start_time});
+        // console.log(personGroupedByColor['EHL']);
+        var dataAprtTime = [];
         color = getRandomColor();
+
+        for(var j = 0; j < aprtGradeGrouped.length; j++) {
+            dataAprtTime.push(
+                {
+                    x: aprtGradeGroupedTime[j],
+                    y: aprtGradeGrouped[j]
+                }
+            );
+        }
         aprtData.push(
             {
                 // plot setting for each product
@@ -224,7 +262,7 @@ function makeChartFilter(filterVal) {
                 borderColor: color,
                 lineTension: 0,
                 fill:false,
-                data: aprtGradeGrouped
+                data: dataAprtTime
             }
         );
     }
@@ -240,8 +278,21 @@ function makeChartFilter(filterVal) {
         type: 'line',
         data: {
             // use slide() function for select the data in the range of the array
-            labels: sorted_time,
+            // labels: sorted_time.slice(1).slice(-10),
+            // labels: sorted_time,
             datasets: aprtData
+        },
+        options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        day: 'MMM D'
+                    }
+                }
+              }]
+            }
         }
     });
 }

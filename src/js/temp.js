@@ -1,3 +1,6 @@
+var gAprtFilter;
+var gUniqueGroup; 
+
 function groupBy(array, key) {
     // Accepts the array and key
     return array.reduce((result, currentValue) => {
@@ -19,14 +22,37 @@ function getRandomColor() {
     return color;
 }
 
-var gAprtFilter;
-
 function updateFilter(aprt) {
     // TODO: update all the value of each filter whenever a filter is used
 }
 
 function preprocessingTime(arrTime) {
     // TODO: Preprocessing time value (aprt_start_time)
+
+    /**
+     * Convert date value from string to Date
+     * Have to convert to Date type because it will be sorted later
+     * Sort result only correct with Date type
+     */
+    arrTime.forEach(function(d, index, arr) {
+        var parts = d.split('-');
+        arr[index] = new Date(parts[0], parts[1] - 1, parts[2]);
+    });
+
+    // Sort time in ascending order
+    var sorted_time = arrTime.sort((a, b) => a - b);
+    /**
+     * Convert "Wed Jul 01 2020 00:00:00 GMT+0700 (Indochina Time)" to "2020-07-01"
+     * Date type to string with format "YYYY-MM-DD"
+     */ 
+    sorted_time.forEach(function(d, index, arr) { 
+        arr[index] = d.toISOString().split('T')[0];
+    });
+
+    // Filter unique value of aprt_time_start only
+    sorted_time = sorted_time.filter((item, i, ar) => ar.indexOf(item) === i);
+
+    return sorted_time;
 }
 
 function makeChart(aprt) {
@@ -37,9 +63,13 @@ function makeChart(aprt) {
     gAprtFilter = aprt;
 
     var aprtStartTime = aprt.map(function(d) {return d.aprt_start_time.split(' ')[0]});
-    var aprtGrade = aprt.map(function(d) {return d.aprt_grade});
-    var prodGroup = aprt.map(function(d) {return d.prodgroup3});
+    var sortTime = preprocessingTime(aprtStartTime);
 
+    var aprtGrade = aprt.map(function(d) {return d.aprt_grade});
+
+    var prodGroup = aprt.map(function(d) {return d.prodgroup3});
+    gUniqueGroup = prodGroup.filter((item, i, ar) => ar.indexOf(item) === i);
+    
 }
 
 function makeChartFilter(aprt, filterCol, filterVal) {
@@ -53,7 +83,7 @@ function makeChartFilter(aprt, filterCol, filterVal) {
 $(document).ready(function() {
     /**
      * Filter function for chart
-     * Call updateChart() to append the value to each filer
+     * Call updateFilter() to append the value to each filer
      */
 
 });
