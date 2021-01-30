@@ -1,5 +1,11 @@
 var gAprtFilter;
-var gUniqueGroup; 
+// Unique value of the column to append to the filter value list
+var gCeid;
+var gL2;
+var gEntity;
+var gOperation;
+var gProduct;
+
 
 function groupBy(array, key) {
     // Accepts the array and key
@@ -68,8 +74,14 @@ function makeChart(aprt) {
     var aprtGrade = aprt.map(function(d) {return d.aprt_grade});
 
     var prodGroup = aprt.map(function(d) {return d.prodgroup3});
-    gUniqueGroup = prodGroup.filter((item, i, ar) => ar.indexOf(item) === i);
+    gProduct = prodGroup.filter((item, i, ar) => ar.indexOf(item) === i);
     
+    
+    var aprtData = [];
+
+    for (var i = 0; i < gProduct.length; i++) {
+
+    }
 }
 
 function makeChartFilter(aprt, filterCol, filterVal) {

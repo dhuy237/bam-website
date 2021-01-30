@@ -135,7 +135,6 @@ function makeChart(aprt) {
 
     for (var i = 0; i < unique.length; i++) {
         // console.log(unique[i]);
-        let aprtGradeByDate = [];
         /**
          * TODO 
          * Problem: Group aprt_grade by date to compute median in each date
@@ -151,10 +150,9 @@ function makeChart(aprt) {
          * }]
          * Output: array of median of each date
          * Get unique date in each Product 
+         * 
+         * Progress: Done making the chart plot correctly aprtGrade with respect to its aprt_start_time
         */
-        // for (let j = 0; j < personGroupedByColor[unique[i]].length; j++) {
-        //     if ()
-        // }
 
         var aprtGradeGrouped = personGroupedByColor[unique[i]].map(function(d) {return +d.aprt_grade});
         var aprtGradeGroupedTime = personGroupedByColor[unique[i]].map(function(d) {return d.aprt_start_time});
@@ -177,6 +175,7 @@ function makeChart(aprt) {
                 // plot setting for each product
                 label: unique[i],
                 borderColor: color,
+                borderWidth: 4,
                 lineTension: 0,
                 fill:false,
                 data: dataAprtTime
@@ -260,6 +259,7 @@ function makeChartFilter(filterVal) {
                 // plot setting for each product
                 label: filterVal[i],
                 borderColor: color,
+                borderWidth: 4,
                 lineTension: 0,
                 fill:false,
                 data: dataAprtTime
