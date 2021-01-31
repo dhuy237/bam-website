@@ -20,3 +20,8 @@ body {
 .button-wrapper {
     display:inline-block;
 }
+
+.p-text {
+    font-size: xx-large;
+    text-align: center;
+}

@@ -177,6 +177,7 @@ function makeChart(aprt) {
                 borderColor: color,
                 borderWidth: 4,
                 lineTension: 0,
+                pointStyle: 'line',
                 fill:false,
                 data: dataAprtTime
             }
@@ -261,6 +262,7 @@ function makeChartFilter(filterVal) {
                 borderColor: color,
                 borderWidth: 4,
                 lineTension: 0,
+                pointStyle: 'line',
                 fill:false,
                 data: dataAprtTime
             }
@@ -300,22 +302,22 @@ function makeChartFilter(filterVal) {
 // For Product Filter
 $(document).ready(function() {
     // Event "show.bs.select": This event fires immediately when the show instance method is called.
-    $('#select1').one('show.bs.select', function() {
+    $('#selectProduct').one('show.bs.select', function() {
         for (var i = 0; i < unique.length; i++) {
             $(this).append(`<option value="${unique[i]}">${unique[i]}</option>`);
         }
-        $('.selectpicker#select1').selectpicker('refresh');
+        $('.selectpicker#selectProduct').selectpicker('refresh');
     })
 });
 
 $(document).ready(function() {
     // Get filter function for chart
-    $('#select1').change(function() {
-        var select = $("#select1").val();
+    $('#selectProduct').change(function() {
+        var select = $("#selectProduct").val();
         var selectLength = select.length;
 
         if (selectLength >= 1 && select.includes("All")) {
-            $('.selectpicker#select1').selectpicker('deselectAll');
+            $('.selectpicker#selectProduct').selectpicker('deselectAll');
             d3.csv(dataPath).then(makeChart);
         }
         // if (select == "All") {
