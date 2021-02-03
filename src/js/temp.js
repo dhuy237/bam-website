@@ -257,4 +257,13 @@ $(document).ready(function() {
      * Call makeChartFilter() and pass the parameter into it
      * Remember to include updateFilter() in each filter function to update value of them
      */
+    $('#filter-container').change(function(t) {
+        console.log(t.target.name);
+        console.log(t.target.value);
+    });
 });
+
+// document.getElementById('filter-container').onchange = ({ target }) => {
+//     console.log(target.value);
+//     console.log(target.name);
+//   };

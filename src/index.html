@@ -53,73 +53,76 @@
         </select>
         </div>
     </form> -->
-    <div style="margin:auto; width:80%; height:50%">
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">Datetime</div>
-            <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectDate" id="selectDate">
-                <option value="Last" selected>Last</option>
-            </select>
-            <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectDate" id="selectDate">
-                <option value="Days" selected>Days</option>
-            </select>
-        </div>
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">CEID Group</div>
-            <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectCeid" id="selectCeid">
-                <option value="All" selected>All</option>
-            </select>
-        </div>
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">L2 Resource</div>
-            <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="selectL2" id="selectL2">
-                <option value="All" selected>All</option>
-            </select>
-        </div>
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">Entity</div>
-            <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="selectEntity" id="selectEntity">
-                <option value="All" selected>All</option>
-            </select>
-        </div>
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">Operation</div>
-            <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectOperation" id="selectOperation">
-                <option value="All" selected>All</option>
-            </select>
-        </div>
-        <!-- <form class="simple_form form-inline"> -->
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">Product</div>
-            <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="selectProduct" id="selectProduct">
-                <option value="All" selected>All</option>
-            </select>
-        </div>
-        <!-- </form> -->
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div for="basic-url" class="form-label">Cascading</div>
-            <select class="selectpicker required form-control" data-width="100px" multiple name="selectCascading" id="selectCascading">
-                <option value="All" selected>All</option>
-                <option value="Yes" selected>Y</option>
-                <option value="No" selected>N</option>
-            </select>
-        </div>
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div class="card" style="width: 10rem;">
-                <h5 class="card-header" style="text-align: center;">P75</h5>
-                <div class="card-body">
-                    <p class="card-text p-text">n/a</p>
+    <form id="filter-container">
+        <div style="margin:auto; width:80%; height:50%">
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">Datetime</div>
+                <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectDate" id="selectDate">
+                    <option value="Last" selected>Last</option>
+                </select>
+                <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectDate" id="selectDate">
+                    <option value="Days" selected>Days</option>
+                </select>
+            </div>
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">CEID Group</div>
+                <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectCeid" id="selectCeid">
+                    <option value="All" selected>All</option>
+                </select>
+            </div>
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">L2 Resource</div>
+                <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="selectL2" id="selectL2">
+                    <option value="All" selected>All</option>
+                </select>
+            </div>
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">Entity</div>
+                <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="selectEntity" id="selectEntity">
+                    <option value="All" selected>All</option>
+                </select>
+            </div>
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">Operation</div>
+                <select class="selectpicker required form-control" data-width="100px" multiple data-live-search="true" name="selectOperation" id="selectOperation">
+                    <option value="All" selected>All</option>
+                </select>
+            </div>
+            <!-- <form class="simple_form form-inline"> -->
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">Product</div>
+                <select class="selectpicker required form-control"  data-width="100px" multiple data-live-search="true" name="selectProduct" id="selectProduct">
+                    <option value="All" selected>All</option>
+                </select>
+            </div>
+            <!-- </form> -->
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div for="basic-url" class="form-label">Cascading</div>
+                <select class="selectpicker required form-control" data-width="100px" multiple name="selectCascading" id="selectCascading">
+                    <option value="All" selected>All</option>
+                    <option value="Yes" selected>Y</option>
+                    <option value="No" selected>N</option>
+                </select>
+            </div>
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div class="card" style="width: 10rem;">
+                    <h5 class="card-header" style="text-align: center;">P75</h5>
+                    <div class="card-body">
+                        <p class="card-text p-text">n/a</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group select required button-wrapper" style="margin-left: 1%;">
+                <div class="card" style="width: 10rem;">
+                    <h5 class="card-header" style="text-align: center;">P50</h5>
+                    <div class="card-body">
+                        <p class="card-text p-text">n/a</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-group select required button-wrapper" style="margin-left: 1%;">
-            <div class="card" style="width: 10rem;">
-                <h5 class="card-header" style="text-align: center;">P50</h5>
-                <div class="card-body">
-                    <p class="card-text p-text">n/a</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    </form>
+    
     
     
 
