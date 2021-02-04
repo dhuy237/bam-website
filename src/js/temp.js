@@ -37,8 +37,7 @@ function getUniqueValue(aprt) {
 }
 
 function updateFilter() {
-    // TODO: update all the value of each filter whenever a filter is used
-    console.log("updateFilter");
+    // Update all the value of each filter whenever a filter is used
     gCeid = gAprtFilter.map(function(d) {return d.ceid});
     gCeid = getUniqueValue(gCeid);
 
@@ -56,6 +55,16 @@ function updateFilter() {
 }
 
 function appendFilterValue() {
+    // $('#selectCeid').find('option').not(':first').remove();
+    // $('#selectL2').find('option').not(':first').remove();
+    // $('#selectEntity').find('option').not(':first').remove();
+    // $('#selectOperation').find('option').not(':first').remove();
+    // $('#selectProduct').find('option').not(':first').remove();
+    $('#selectCeid option:not(:first)').remove();
+    $('#selectL2 option:not(:first)').remove();
+    $('#selectEntity option:not(:first)').remove();
+    $('#selectOperation option:not(:first)').remove();
+    $('#selectProduct option:not(:first)').remove();
     for (var i = 0; i < gCeid.length; i++) {
         $('#selectCeid').append($('<option>',
         {
@@ -64,7 +73,6 @@ function appendFilterValue() {
         }));
     }
     $('.selectpicker#selectCeid').selectpicker('refresh');
-    const filterFeature = ['gCeid', 'gL2', 'gEntity', 'gOperation', 'gProduct'];
 
     for (var i = 0; i < gL2.length; i++) {
         $('#selectL2').append($('<option>',
@@ -138,6 +146,8 @@ function makeChart(aprt) {
     $('#graph-container').append('<canvas id="myChart"></canvas>');
 
     gAprtFilter = aprt;
+    
+    console.log(gAprtFilter);
     updateFilter();
     appendFilterValue();
 
@@ -207,48 +217,29 @@ function makeChartFilter(aprt, filterCol, filterVal) {
      * filterCol: filter feature
      * filterVal: filer value
      */
-}
-
-// $(document).ready(function() {
-//     /**
-//      * Filter function for chart
-//      * Call updateFilter() to append the value to each filer
-//      */
-//     // d3.csv(dataPath).then(updateFilter);
+    var filterColValue;
+    if (filterCol == "selectCeid") {
+        filterColValue = "ceid";
+    }
+    else if (filterCol == "selectL2") {filterColValue = "ceid";}
+    else if (filterCol == "selectEntity") {filterColValue = "entity";}
+    else if (filterCol == "selectOperation") {filterColValue = "operation";}
+    else if (filterCol == "selectProduct") {filterColValue = "prodgroup3";}
+    else if (filterCol == "selectCascading") {filterColValue = "cascading";}
+    if (filterVal == "All") {
+        d3.csv(dataPath).then(makeChart);
+    }
+    else {
+        gAprtFilter =  aprt.filter(function(item) {
+            return item[filterColValue] == filterVal;
+        });
+        makeChart(gAprtFilter);
+    }
+    
+    console.log(gAprtFilter);
     
 
-//     $('#selectCeid').one('show.bs.select', function() {
-//         for (var i = 0; i < gCeid.length; i++) {
-//             $(this).append(`<option value="${gCeid[i]}">${gCeid[i]}</option>`);
-//         }
-//         $('.selectpicker#selectCeid').selectpicker('refresh');
-//     })
-//     // $("#selectCeid option:not(:first)").remove();
-//     $('#selectL2').one('show.bs.select', function() {
-//         for (var i = 0; i < gL2.length; i++) {
-//             $(this).append(`<option value="${gL2[i]}">${gL2[i]}</option>`);
-//         }
-//         $('.selectpicker#selectL2').selectpicker('refresh');
-//     })
-//     $('#selectEntity').one('show.bs.select', function() {
-//         for (var i = 0; i < gEntity.length; i++) {
-//             $(this).append(`<option value="${gEntity[i]}">${gEntity[i]}</option>`);
-//         }
-//         $('.selectpicker#selectEntity').selectpicker('refresh');
-//     })
-//     $('#selectOperation').one('show.bs.select', function() {
-//         for (var i = 0; i < gOperation.length; i++) {
-//             $(this).append(`<option value="${gOperation[i]}">${gOperation[i]}</option>`);
-//         }
-//         $('.selectpicker#selectOperation').selectpicker('refresh');
-//     })
-//     $('#selectProduct').one('show.bs.select', function() {
-//         for (var i = 0; i < gProduct.length; i++) {
-//             $(this).append(`<option value="${gProduct[i]}">${gProduct[i]}</option>`);
-//         }
-//         $('.selectpicker#selectProduct').selectpicker('refresh');
-//     })
-// });
+}
 
 $(document).ready(function() {
     /**
@@ -260,6 +251,7 @@ $(document).ready(function() {
     $('#filter-container').change(function(t) {
         console.log(t.target.name);
         console.log(t.target.value);
+        makeChartFilter(gAprtFilter, t.target.name, t.target.value);
     });
 });
 

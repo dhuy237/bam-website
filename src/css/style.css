@@ -25,3 +25,7 @@ body {
     font-size: xx-large;
     text-align: center;
 }
+
+input[type=number]{
+    width: 50px;
+}
