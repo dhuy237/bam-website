@@ -35,6 +35,45 @@ function getRandomColor() {
 function getUniqueValue(aprt) {
     return aprt.filter((item, i, ar) => ar.indexOf(item) === i);
 }
+// --- Calculate Quartile --- 
+
+// sort array ascending
+const asc = arr => arr.sort((a, b) => a - b);
+
+const sum = arr => arr.reduce((a, b) => a + b, 0);
+
+const mean = arr => sum(arr) / arr.length;
+
+// sample standard deviation
+const std = (arr) => {
+    const mu = mean(arr);
+    const diffArr = arr.map(a => (a - mu) ** 2);
+    return Math.sqrt(sum(diffArr) / (arr.length - 1));
+};
+
+const quantile = (arr, q) => {
+    const sorted = asc(arr);
+    const pos = (sorted.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if (sorted[base + 1] !== undefined) {
+        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    } else {
+        return sorted[base];
+    }
+};
+
+const q25 = arr => quantile(arr, .25);
+
+const q50 = arr => quantile(arr, .50);
+
+const q75 = arr => quantile(arr, .75);
+
+const median = arr => q50(arr);
+
+// console.log(median([0.6339220606052024, 0.004016931957101243, 0.138119437078035, 0.38064704776624414, 0.004799234551713907]));
+
+// --- End calculate quartile --- 
 
 function updateFilter() {
     // Update all the value of each filter whenever a filter is used
@@ -65,6 +104,7 @@ function appendFilterValue() {
     $('#selectEntity option:not(:first)').remove();
     $('#selectOperation option:not(:first)').remove();
     $('#selectProduct option:not(:first)').remove();
+
     for (var i = 0; i < gCeid.length; i++) {
         $('#selectCeid').append($('<option>',
         {
@@ -144,7 +184,7 @@ function makeChart(aprt) {
     // Clear a chart from a canvas so that hover events cannot be triggered (it appears when we call makeChart() many times)
     $("#myChart").remove();
     $('#graph-container').append('<canvas id="myChart"></canvas>');
-
+    
     gAprtFilter = aprt;
     
     console.log(gAprtFilter);
@@ -156,6 +196,11 @@ function makeChart(aprt) {
 
     var aprtGrade = aprt.map(function(d) {return d.aprt_grade});
 
+    $("#p50").remove();
+    $('#p50-container').append('<p class="card-text p-text" id="p50">' + (Math.round(q50(aprtGrade) * 100)/100).toFixed(2) +'</p>');
+    $("#p75").remove();
+    $('#p75-container').append('<p class="card-text p-text" id="p75">' + (Math.round(q75(aprtGrade) * 100)/100).toFixed(2) +'</p>');
+
     const aprtGroupByProduct = groupBy(aprt, 'prodgroup3');
     
     var aprtData = [];
@@ -164,6 +209,8 @@ function makeChart(aprt) {
         var aprtGradeGrouped = aprtGroupByProduct[gProduct[i]].map(function(d) {return +d.aprt_grade});
         var aprtGradeGroupedTime = aprtGroupByProduct[gProduct[i]].map(function(d) {return d.aprt_start_time});
         var dataAprtTime = [];
+        var aprtQ50 = [];
+        var dataAprtQ50 = [];
         color = getRandomColor();
 
         for(var j = 0; j < aprtGradeGrouped.length; j++) {
@@ -174,6 +221,47 @@ function makeChart(aprt) {
                 }
             );
         }
+        console.log(dataAprtTime);
+
+        const groups = dataAprtTime.reduce((groups, game) => {
+            const date = game.x.split(' ')[0];
+            if (!groups[date]) {
+              groups[date] = [];
+            }
+            groups[date].push(game.y);
+            return groups;
+        }, {});
+        console.log(groups);
+        const groups2 = dataAprtTime.reduce((groups, game) => {
+            const date = game.x.split(' ')[0];
+            if (!groups[date]) {
+              groups[date] = [];
+            }
+            groups[date].push(game);
+            return groups;
+        }, {});
+        
+        for (let item of Object.values(groups)) {
+            aprtQ50.push(q50(item));
+        }
+        console.log(aprtQ50);
+
+        /**
+         * Problem: if dataAprt is a even array, it will be not found in aprt50 -> undefined
+         * And the computation of finding median may break the browser 
+         */
+        // for (var i = 0; i < aprtQ50.length; i++) {
+        //     // dataAprtQ50.push(Object.values(groups2)[i].find(o => o.y === aprtQ50[i]));     
+        //     dataAprtQ50.push(
+        //         {
+        //             x: Object.values(groups2)[i][0].x,
+        //             y: aprtQ50[i]
+        //         }
+        //     );
+        //     console.log(dataAprtQ50);
+        // }
+        
+
         aprtData.push(
             {
                 // plot setting for each product
@@ -218,9 +306,7 @@ function makeChartFilter(aprt, filterCol, filterVal) {
      * filterVal: filer value
      */
     var filterColValue;
-    if (filterCol == "selectCeid") {
-        filterColValue = "ceid";
-    }
+    if (filterCol == "selectCeid") {filterColValue = "ceid";}
     else if (filterCol == "selectL2") {filterColValue = "ceid";}
     else if (filterCol == "selectEntity") {filterColValue = "entity";}
     else if (filterCol == "selectOperation") {filterColValue = "operation";}
